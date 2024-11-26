@@ -30,7 +30,7 @@ function contenido() {
             }</strong></p>    
     
         <button type="button" class="btn btn-primary" id = ${x.id}>Marcar Leido</button>
-        <button type="button" class="btn btn-danger">Eliminar</button>
+        <button type="button" class="btn btn-danger" id = ${x.id}>Eliminar</button>
        
       </div>
     </div>
@@ -46,21 +46,54 @@ function contenido() {
             const libro = libros.find(x => x.id === libroId);
             libro.leido = true; 
             contenido();
-
-
-
-
-
-
-
-
         }
 
         )
 
     });
-}
+    const eliminar = document.querySelectorAll(".btn-danger")
+    eliminar.forEach(boton =>{
+        boton.addEventListener("click",(e)=>{
+            e.preventDefault()
+            const idLibro = parseInt(boton.id)
+            libros.splice(idLibro - 1)
+            contenido()
+        })
+    })
 
+}
+const btnAgregar = document.getElementById("add")
+const modal = document.getElementById("modal")
+
+btnAgregar.addEventListener("click",(e) =>{
+    e.preventDefault()
+    modal.style.display = "block";
+    btnAgregar.style.display = "none"
+
+})
+const nombre = document.getElementById("Nombre")
+const autor = document.getElementById("autor")
+const año = document.getElementById("año")
+const añadir = document.getElementById("submit")
+
+añadir.addEventListener("click",(e) =>{
+    e.preventDefault()
+    function nuevolibro(nombre,autor,año){
+        this.id +=1; 
+        this.nombre = nombre;
+        this.autor = autor;
+        this.año = año;
+
+    }
+    const nuevo =  new nuevolibro(nombre.value,autor.value,año.value)
+    libros.push(nuevo)
+    nuevo.id = libros.length;
+    modal.style.display = "none"
+    btnAgregar.style.display = "inline"
+    autor.textContent = " "
+    
+    contenido()
+})
 
 
 contenido();
